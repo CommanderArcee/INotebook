@@ -15,6 +15,7 @@
     "express": "^4.19.2",
     "express-validator": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
+    "portfinder": "^1.0.32",
     "sequelize": "^6.37.3",
     "tedious": "^18.2.0"
   },

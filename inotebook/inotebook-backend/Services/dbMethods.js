@@ -14,5 +14,10 @@ const findByFilter = async(Email) => {
     return existingUser; 
 }
 
+const findById = async(UserId) => {
+    const existingUser = await db.Users.findOne({where : {UserId}});
+    return existingUser; 
+}
 
-module.exports = {createUser, findByFilter};
+
+module.exports = {createUser, findByFilter, findById};

@@ -5,7 +5,7 @@ const cors = require("cors");
 
 const app = express();
 
-const port = process.env.PORT || 5000;
+//const port = process.env.port || 5000 ;  Inseated of this we have used portfinder npm package.
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,11 +18,15 @@ app.use(cors());  // to enable cors
 app.use(require('./routes/auth'));
 app.use(require('./routes/notes'));
 
+const portfinder = require('portfinder');
 
-app.listen(port, () => {
-    console.log(`Server is start at this localhost\\ ${port}`)
+portfinder.getPort((err, port) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
 });
-
-// pehle server connect hua qki db connect hone mei time leta hai isliye. Isi ko Asynchronous JS kehte hai isliye hum js ka nature non-blocking hota hai vo function ko call krta hua 
-// chlta hai. Isliye yeh baki languages se different hai qki python,java,c,c++,c# yeh sab synchronously work krti.
 
