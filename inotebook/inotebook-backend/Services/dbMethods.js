@@ -8,16 +8,14 @@ const createUser = async ({ Name, Email, Password, Date }) => {
     return newUser;
 };
 
-
 const findByFilter = async(Email) => {
     const existingUser = await db.Users.findOne({where : {Email}});
     return existingUser; 
 }
 
-const findById = async(UserId) => {
-    const existingUser = await db.Users.findOne({where : {UserId}});
-    return existingUser; 
+const getRecordsOnUserId = async(UserId) =>{
+    const allRecords = await db.Notes.findAll({where : {user_id : UserId}});
+    return allRecords;
 }
-
-
-module.exports = {createUser, findByFilter, findById};
+// One method which used for save
+module.exports = {createUser, findByFilter, getRecordsOnUserId};

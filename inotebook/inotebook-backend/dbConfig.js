@@ -1,5 +1,6 @@
-const { Sequelize } = require("sequelize");
-const User = require("./models/MUser");
+const { Sequelize, QueryInterface } = require("sequelize");
+const Users = require("./models/MUsers");
+const Notes = require("./models/MNotes");
 require("dotenv").config();
 
 const sequelize = new Sequelize(
@@ -17,11 +18,51 @@ const sequelize = new Sequelize(
 );
 
 const db = {};
-db.Users = User(sequelize);
-// sync all models with database
-sequelize.sync({ alter: true });
+db.Users = Users(sequelize);
+db.Notes = Notes(sequelize);
 
+const checkAndSetInitialValue = async (tableName, desiredValue) => {
+  const result = await sequelize.query(`
+    SELECT IDENT_CURRENT('${tableName}') AS currentIdentity
+  `);
+  const currentIdentity = result[0][0].currentIdentity;
+  if (currentIdentity < desiredValue) {
+    await sequelize.query(`DBCC CHECKIDENT ('${tableName}', RESEED, ${desiredValue - 1})`);
+    console.log(`Identity column for ${tableName} reseeded to ${desiredValue}.`);
+  } else {
+    console.log(`No reseeding needed for ${tableName}.`);
+  }
+};
+
+
+const setInitialValueIdentityColumns = () => {
+  // We need to write always a query like this and this returns a promise that's why I am facing errors. Because I am not write the code in correct way.
+  return Promise.all([
+    checkAndSetInitialValue('Users', 1000),
+    checkAndSetInitialValue('Notes', 10000)
+  ]);
+}
+
+
+
+// sync all models with database.
+// with sync no need to create migration file and code. By this we refactor the promise chaining into async-await.
+const databaseSync = async () => {
+  try{
+    await sequelize.sync({ alter: true });
+    console.log("tables are synced");
+
+    await setInitialValueIdentityColumns();
+    console.log('Identity column initial value set.');
+  }
+  catch(e){
+    console.error('Unable to create database & tables:', e);
+  }
+}
+
+databaseSync();
 module.exports = db;
+
 
 /*
 Process the flow of sequelizer how to create the tbl in db.
