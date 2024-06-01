@@ -1,12 +1,13 @@
 const express = require("express");
-//const users = require("../models/MUser");
 const router = express.Router();
 const { validationResult } = require("express-validator");
 const { handleEmail, handlePassword } = require("../validations/validation");
-const { createUser, findByFilter } = require("../Services/dbMethods");
+const { createUser, findByFilter, findById } = require("../Services/dbMethods");
 const { createHashPassword, verifyPassword } = require("../utils/commonMethods");
 const jwt = require('jsonwebtoken');
-const JWT_Secret = "*8N0teb0)k";
+require("dotenv").config();
+const LoggedInUserDetails = require('../middleware/authLoggedInUser');
+const { Users } = require("../dbConfig");
 
 
 /* Note :-> when I hit this api from browser application will crash beacuse we said to code that save the details which you received from req and we can't add any details in req's
@@ -36,10 +37,10 @@ router.post('/api/auth/createUser', [handleEmail, handlePassword], async (req, r
         });
 
         const data = {
-            email: user.Email
+            UserId: user.userId
         }
-        const authToken = jwt.sign(data, JWT_Secret);
-        console.log(authToken);
+        
+        const authToken = jwt.sign(data, process.env.JWT_SECRET);
 
         res.send(`${authToken} user has been created`);
     }
@@ -73,13 +74,31 @@ router.post('/api/auth/login', [handleEmail, handlePassword], async (req, res) =
         }
 
         const payload = {
-            Email : existingUser.Email
+            UserId : existingUser.UserId
         }
-        const authToken = jwt.sign(payload, JWT_Secret);  //it means we sign the jwt with our secrer key. if someone send wrong data by secret key we got to know it wrong data. 
+        //it means we sign the jwt with our secrer key. if someone send wrong data by secret key we got to know it wrong data. 
+        const authToken = jwt.sign(payload, process.env.JWT_SECRET);  
         res.send(`Auth Token : ${authToken}`);
 
     } catch (error) {
-        console.log(error.message);
+        console.log(`error : ${error.message}`);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+// Router 3: Get LoggedIn user details : login details required.
+
+// which means we get data from token and as we know we set data in the token so get that token from the header and decode that token, verify and get out data by that
+// data(we know data we pass the details in the data like id/email anaything which is to be unique and index also apply.) I am passing email at time of token generation.
+/* So we create middleware so that we use that anywhere. and we know we call the middleware in the httpmethods before callback function. */
+router.post('/api/auth/getuser', LoggedInUserDetails, async (req, res) => {
+    try {
+        // What method we used with our model Users this methods given by sequelize.
+        const userDetails = await Users.findByPk(req.user.UserId);
+        res.send(userDetails);
+        
+    } catch (error) {
+        console.log(`error : ${error.message}`);
         res.status(500).send("Internal Server Error");
     }
 });
