@@ -29,10 +29,10 @@ const options = {
     ]
 };
 
-return sequelize.define("Users", attributes, options);
+const Users = sequelize.define("Users", attributes, options);
 // In option we create timestampls, indexex, trigger what we do with table everything we define inside the options and sequelize created when engine/nodejs will run.
 // Now we don't run migration.
-
+return Users
 }
 
 module.exports = model;

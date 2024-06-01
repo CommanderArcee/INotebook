@@ -7,6 +7,7 @@ const { createHashPassword, verifyPassword } = require("../utils/commonMethods")
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
 const LoggedInUserDetails = require('../middleware/authLoggedInUser');
+const { Users } = require("../dbConfig");
 
 
 /* Note :-> when I hit this api from browser application will crash beacuse we said to code that save the details which you received from req and we can't add any details in req's
@@ -40,7 +41,6 @@ router.post('/api/auth/createUser', [handleEmail, handlePassword], async (req, r
         }
         
         const authToken = jwt.sign(data, process.env.JWT_SECRET);
-        console.log(authToken);
 
         res.send(`${authToken} user has been created`);
     }
@@ -76,7 +76,8 @@ router.post('/api/auth/login', [handleEmail, handlePassword], async (req, res) =
         const payload = {
             UserId : existingUser.UserId
         }
-        const authToken = jwt.sign(payload, process.env.JWT_SECRET);  //it means we sign the jwt with our secrer key. if someone send wrong data by secret key we got to know it wrong data. 
+        //it means we sign the jwt with our secrer key. if someone send wrong data by secret key we got to know it wrong data. 
+        const authToken = jwt.sign(payload, process.env.JWT_SECRET);  
         res.send(`Auth Token : ${authToken}`);
 
     } catch (error) {
@@ -92,13 +93,14 @@ router.post('/api/auth/login', [handleEmail, handlePassword], async (req, res) =
 /* So we create middleware so that we use that anywhere. and we know we call the middleware in the httpmethods before callback function. */
 router.post('/api/auth/getuser', LoggedInUserDetails, async (req, res) => {
     try {
-        const userDetails = await findById(req.user.UserId);
+        // What method we used with our model Users this methods given by sequelize.
+        const userDetails = await Users.findByPk(req.user.UserId);
         res.send(userDetails);
         
     } catch (error) {
         console.log(`error : ${error.message}`);
         res.status(500).send("Internal Server Error");
     }
-})
+});
 
 module.exports = router;
