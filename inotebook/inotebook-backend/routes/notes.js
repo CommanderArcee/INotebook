@@ -97,7 +97,8 @@ router.post('/api/notes/delete/:id', LoggedInUserDetails, async (req, res) => {
             return res.status(401).send("Invalid User");
         };
 
-        let getUpdatedNote = await Notes.destroy({
+        // This method used for delete data. This a sequelize's method.
+        await Notes.destroy({
             where: { NotesId: getNote.NotesId }
         });
 
