@@ -5,9 +5,11 @@ const { handleEmail, handlePassword } = require("../validations/validation");
 const { createUser, findByFilter, findById } = require("../Services/dbMethods");
 const { createHashPassword, verifyPassword } = require("../utils/commonMethods");
 const jwt = require('jsonwebtoken');
-require("dotenv").config();
+const config = require('../config/config.json')
+//require("dotenv").config();
 const LoggedInUserDetails = require('../middleware/authLoggedInUser');
 const { Users } = require("../dbConfig");
+
 
 
 /* Note :-> when I hit this api from browser application will crash beacuse we said to code that save the details which you received from req and we can't add any details in req's
@@ -40,7 +42,7 @@ router.post('/api/auth/createUser', [handleEmail, handlePassword], async (req, r
             UserId: user.userId
         }
         
-        const authToken = jwt.sign(data, process.env.JWT_SECRET);
+        const authToken = jwt.sign(data, config.development.JWT_SECRET);
 
         res.send(`${authToken} user has been created`);
     }
@@ -59,6 +61,7 @@ router.post('/api/auth/login', [handleEmail, handlePassword], async (req, res) =
     }
 
     try {
+        
         let { email, password } = req.body;
         //vlaidate the user who exist or not.
         let existingUser = await findByFilter(email);
@@ -77,7 +80,7 @@ router.post('/api/auth/login', [handleEmail, handlePassword], async (req, res) =
             UserId : existingUser.UserId
         }
         //it means we sign the jwt with our secrer key. if someone send wrong data by secret key we got to know it wrong data. 
-        const authToken = jwt.sign(payload, process.env.JWT_SECRET);  
+        const authToken = jwt.sign(payload, config.development.JWT_SECRET);  
         res.send(`Auth Token : ${authToken}`);
 
     } catch (error) {
