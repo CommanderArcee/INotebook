@@ -1,23 +1,26 @@
-const { Sequelize, QueryInterface } = require("sequelize");
+const { Sequelize } = require("sequelize");
 const Users = require("./models/MUsers");
 const Notes = require("./models/MNotes");
-require("dotenv").config();
+const config = require('./config/config.json');
+// In config.json we add details/we can say add connectionstring of sql. Here, by config.json we connect sequelize with DB.
+// That's why we create 3environment in config.json. So when we deploy our application we add details connectionString as per env(like production,test).
+// As now project is in development condition that's why I added development I deploy my application in prod so we add production db details here.
 
+const db = {};
 const sequelize = new Sequelize(
-  process.env.DB,
-  process.env.USER,
-  process.env.PASSWORD,
+  config.development.database,
+  config.development.username,
+  config.development.password,
   {
-    host: process.env.HOST,
-    port: process.env.SQL_PORT,
-    dialect: process.env.DIALECT,
+    host: config.development.host,
+    port: config.development.SQL_PORT,
+    dialect: config.development.dialect,
     dialectOptions: {
       options: { encrypt: false },
     },
   }
 );
 
-const db = {};
 db.Users = Users(sequelize);
 db.Notes = Notes(sequelize);
 
@@ -42,8 +45,6 @@ const setInitialValueIdentityColumns = () => {
     checkAndSetInitialValue('Notes', 10000)
   ]);
 }
-
-
 
 // sync all models with database.
 // with sync no need to create migration file and code. By this we refactor the promise chaining into async-await.
