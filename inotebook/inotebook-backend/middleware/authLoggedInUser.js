@@ -6,7 +6,7 @@ In this I have learnt how to use jwt and why we use verify/check the authenticat
 code from header of req. Because we get the details of logged in user by that data so we decode the token with the help of verify using the jwtsecret key.
 */
 const jwt = require('jsonwebtoken');
-require("dotenv").config();
+const config = require('../config/config.json');
 
 const LoggedInUserDetails = async (req, res, next) => {
     const token = req.header("auth-token");
@@ -14,7 +14,7 @@ const LoggedInUserDetails = async (req, res, next) => {
         res.status(401).send("Invalid Authentication");
     }
     try {
-        const data = jwt.verify(token, process.env.JWT_SECRET);
+        const data = jwt.verify(token, config.development.JWT_SECRET);
         req.user = data;
         next();
     } catch (error) {
