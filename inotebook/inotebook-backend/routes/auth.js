@@ -5,7 +5,7 @@ const { handleEmail, handlePassword } = require("../validations/validation");
 const { createUser, findByFilter, findById } = require("../Services/dbMethods");
 const { createHashPassword, verifyPassword } = require("../utils/commonMethods");
 const jwt = require('jsonwebtoken');
-const config = require('../config/config.json')
+const config = require('../config/config.js')
 //require("dotenv").config();
 const LoggedInUserDetails = require('../middleware/authLoggedInUser');
 const { Users } = require("../dbConfig");
