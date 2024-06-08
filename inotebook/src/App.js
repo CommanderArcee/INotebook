@@ -1,9 +1,26 @@
 import './App.css';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom'
+import Home from './component/Home';
+import Navbar from './component/Navbar';
+import About from './component/About';
+import NewNotes from './component/NewNotes';
 
+// We use BrowserRouter in the index.js file and add main component because other component used inside the main that's why we call main inside the BrowserROuter and, we
+// are able to use routing in whole application.
 function App() {
   return (
     <div className="App">
-      <h1>This is my INotebook Project</h1>
+      <div className='container'>
+        <div className='row my-3'>
+          <Navbar />
+          <Routes>
+            <Route exact path='/' element={<Home />} />
+            <Route exact path='/about' element={<About />} />
+            <Route exact path='/AddNote' element={<NewNotes />} />
+          </Routes>
+        </div>
+      </div>
     </div>
   );
 }
