@@ -1,9 +1,9 @@
 const { Sequelize } = require("sequelize");
 const Users = require("./models/MUsers");
 const Notes = require("./models/MNotes");
-const config = require('./config/config.json');
-// In config.json we add details/we can say add connectionstring of sql. Here, by config.json we connect sequelize with DB.
-// That's why we create 3environment in config.json. So when we deploy our application we add details connectionString as per env(like production,test).
+const config = require('./config/config.js');
+// In config.js we add details/we can say add connectionstring of sql. Here, by config.json we connect sequelize with DB.
+// That's why we create 3environment in config.js. So when we deploy our application we add details connectionString as per env(like production,test).
 // As now project is in development condition that's why I added development I deploy my application in prod so we add production db details here.
 
 const db = {};
@@ -14,12 +14,9 @@ const sequelize = new Sequelize(
   {
     host: config.development.host,
     port: config.development.SQL_PORT,
-    dialect: config.development.dialect,
-    dialectOptions: {
-      options: { encrypt: false },
-    },
+    dialect: config.development.dialect
   }
-);
+); 
 
 db.Users = Users(sequelize);
 db.Notes = Notes(sequelize);
