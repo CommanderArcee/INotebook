@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllNotes } from '../redux/slice/GetNotesSlice';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
   // dispatch send the event action to reducer and then reducer do action when action gives some data after this it return data to store.
@@ -29,7 +30,7 @@ const Home = () => {
           )
         })
       }
-
+      <Link className='btn btn-primary' to="/AddNote">Add Note</Link>
     </>
   )
 }
