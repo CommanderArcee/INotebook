@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
-const api_url = "http://localhost:8000";
+export const api_url = "http://localhost:8000";
 
 
 // createasyncthunk is a action.
@@ -9,7 +9,7 @@ export const getAllNotes = createAsyncThunk('getAllNotes', async () => {
         method:"GET",
         headers:{
             'Content-Type': 'application/json',
-            "auth-token": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEwMDAsImlhdCI6MTcxNzg3NjE4MX0.5SHb4jHd6EUggmbC5vpaUmE4aLiZH6_q-kQiIoEjCLc'
+            "auth-token": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEwMDEsImlhdCI6MTcxNzkzMjMyMn0.LqYmQEvuPA_pMe4RnCldw9zlYLWOW3IyfKBxmVFR7mw'
         }
     });
     const responseData = await response.json();
@@ -17,7 +17,7 @@ export const getAllNotes = createAsyncThunk('getAllNotes', async () => {
 }) 
 
 const getNotes = createSlice({
-    name : "getNotesReducer",
+    name : "getNotes",
     initialState : {
         isLoading : false,
         data : null,
