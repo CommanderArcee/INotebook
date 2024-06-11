@@ -39,15 +39,16 @@ router.post('/api/notes/createnotes',
                 Date: Date.now()
             };
             const result = await Notes.create(newNotes);
-            res.send(result);
+            res.send("Success");
         } catch (error) {
             console.log(error);
+            res.send("Error");
         }
     });
 
 
 // Update Notes Api :- In this requried login    
-router.put('/api/notes/updatenote/:id', LoggedInUserDetails, async (req, res) => {
+router.put('/api/notes/:id/updatenote', LoggedInUserDetails, async (req, res) => {
     try {
         // this id means notesId of notes because we edit the notes.
         const { title, description } = req.body;
@@ -85,7 +86,7 @@ router.put('/api/notes/updatenote/:id', LoggedInUserDetails, async (req, res) =>
 });
 
 // Delete Notes Api :- In this requried login    
-router.post('/api/notes/delete/:id', LoggedInUserDetails, async (req, res) => {
+router.post('/api/notes/:id/deletenote', LoggedInUserDetails, async (req, res) => {
     try {
         // req.params.id -> it means we get that notes which user click and that id we insert in the api.
         let getNote = await Notes.findByPk(req.params.id);
