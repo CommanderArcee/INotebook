@@ -15,3 +15,15 @@ code {
 i{
   cursor: pointer;
 }
+
+.heading {
+  font-family: serif;
+  font-size: 65px;
+}
+
+.labelheading {
+  font-family: ui-sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 40px;
+}

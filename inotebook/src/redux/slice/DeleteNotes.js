@@ -1,14 +1,14 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {api_url} from './GetNotesSlice';
+const apiUrl = process.env.REACT_APP_API_URl;
 
 
 // we can createasyncthunk is a action becasue with api we get data and where we can get data that was a action.
 export const funcDeleteNote = createAsyncThunk('funcDeleteNote', async (id) =>{
-    const response = await fetch(`${api_url}/api/notes/${id}/deletenote`, {
+    const response = await fetch(`${apiUrl}/notes/${id}/deletenote`, {
         method : "POST",
         headers : {
             "Content-Type": "application/json",
-            "auth-token": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEwMDEsImlhdCI6MTcxODAzOTg2MX0.NUElplGnWaPE5dt_jffzd3oAGlZy5-NI_kvaTl-EGwQ'
+            "auth-token": localStorage.getItem('token')
         }
         // Here we do not use body because we want only delete data which we get done by Id. More E
     });

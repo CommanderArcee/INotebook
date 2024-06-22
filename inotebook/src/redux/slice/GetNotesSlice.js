@@ -1,15 +1,13 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-
-export const api_url = "http://localhost:8000";
-
+const apiUrl = process.env.REACT_APP_API_URl;
 
 // createasyncthunk is a action.
 export const getAllNotes = createAsyncThunk('getAllNotes', async () => {
-    const response = await fetch(`${api_url}/api/notes/getallnotes`, {
+    const response = await fetch(`${apiUrl}/notes/getallnotes`, {
         method:"GET",
         headers:{
             'Content-Type': 'application/json',
-            "auth-token": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEwMDEsImlhdCI6MTcxNzkzMjMyMn0.LqYmQEvuPA_pMe4RnCldw9zlYLWOW3IyfKBxmVFR7mw'
+            "auth-token": localStorage.getItem('token')
         }
     });
     const responseData = await response.json();
@@ -22,6 +20,11 @@ const getNotes = createSlice({
         isLoading : false,
         data : null,
         isError : false
+    },
+    reducers : {
+        clearNoteData : (state) => {
+            state.data = null;
+        }
     },
     // Here when we use createAsyncThunk it menas we do action(means we call an api tab we use extraReducer object or function where we give builder argument so that we get
     // data according to the states of an promise if fulfilled state of an api it means it will send the data so we set the data from action.payload to state because all data
@@ -40,5 +43,6 @@ const getNotes = createSlice({
     }
 })
 
+export const {clearNoteData} = getNotes.actions;
 export default getNotes.reducer;
 // Here it means we export the all reducers which we create inside the reducer key where all reducer have been created as per the functionality.

@@ -1,12 +1,12 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import { api_url } from './GetNotesSlice';
+const apiUrl = process.env.REACT_APP_API_URl;
 
 export const updateEditNote = createAsyncThunk('updateEditNote' , async ({id, title, description}) => {
-    const response = await fetch(`${api_url}/api/notes/${id}/updatenote`, {
+    const response = await fetch(`${apiUrl}/notes/${id}/updatenote`, {
         method : 'PUT',
         headers : {
             "Content-Type": "application/json",
-            "auth-token": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEwMDEsImlhdCI6MTcxODUzMDc3MH0.gcsqXijCC71hk_uKfEFys-WZMuGuBYvjOXGKwlVHT_I'
+            "auth-token": localStorage.getItem('token')
         },
         body : JSON.stringify({id, title, description})  //in string we add object/array its depends on api in which we received data from api
     });
