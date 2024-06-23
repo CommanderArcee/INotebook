@@ -22,13 +22,12 @@ const getNotes = createSlice({
         isError : false
     },
     reducers : {
+        // here we give state as an argument but can't give at time of calling this reducer function because this state refered to initial state. So we give the action at time of 
+        // calling reducer function. That's why we gave here actions in reducer function that's not mandatory.
         clearNoteData : (state) => {
             state.data = null;
         }
     },
-    // Here when we use createAsyncThunk it menas we do action(means we call an api tab we use extraReducer object or function where we give builder argument so that we get
-    // data according to the states of an promise if fulfilled state of an api it means it will send the data so we set the data from action.payload to state because all data
-    // will be coming in object form or we can say json form from an api inside the action that's why we said createasyncthunk is an action.
     extraReducers : (builder) => {
         builder.addCase(getAllNotes.pending, (state, action) => {
             state.isLoading = true;
@@ -41,6 +40,11 @@ const getNotes = createSlice({
             state.isError = true;
         });
     }
+    /* 
+    Above when we use createAsyncThunk it menas we do action(means we call an api tab we use extraReducer object or function where we give builder argument so that we get data
+    according to the states of an promise if fulfilled state of an api it means it will send the data so we set the data from action.payload to state because all data will be coming
+    in object form or we can say json form from an api inside the action that's why we said createasyncthunk is an action. 
+    */
 })
 
 export const {clearNoteData} = getNotes.actions;

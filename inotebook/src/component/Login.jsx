@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/auth/page/loginSlice';
+import useAlert from '../customhook/useAlert';
+import AlertMessage from './AlertMessage';
 
 export default function Login() {
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [authError, setAuthError] = useState(null);
     const navigate = useNavigate();
+    const showAlert = useAlert();
+    const validationAlertMsg = useSelector(state => state.ValidationAlert.alert);
 
     /* By this without useSelector also get results from an api method as we do below. which we do in redux method with extra reducer. */
     /* we add logic here. By this I get to know that if needed we add own code logic as well not depend on useSelector to get data. if we are not able to work with useSelector. */
@@ -20,12 +23,12 @@ export default function Login() {
             if (authToken) {
                 localStorage.setItem('token', authToken);
                 navigate("/");
-            } 
+            }
             else if (ErrorMsg) {
-                setAuthError(result.payload.ErrorMsg);
+                showAlert({type : "danger", message : ErrorMsg});
             }
             else {
-                setAuthError("Login failed");
+                showAlert({type : "danger", message : "login failed"});
             }
         }
     };
@@ -57,10 +60,12 @@ export default function Login() {
                             /* Here when use onClick or onSubmit method so page will be reload because its a functionality of form. We prevent this using from event.preventDefault */
                             /* If we use form so we need to add method of for submit or click type in form tag not in button so by all this when we click on button page will not reload.*/
                         }
-                        {authError && <h2>{authError}</h2>}
                     </div>
                 </div>
             </form>
+            <div className='errordiv'>
+                {validationAlertMsg && <AlertMessage alert={validationAlertMsg.type} message={validationAlertMsg.message} />}
+            </div>
         </div>
     )
 }

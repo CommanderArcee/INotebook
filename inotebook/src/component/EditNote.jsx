@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {clearStatusMsg, updateEditNote}  from '../redux/slice/UpdateNoteSlice';
 import AlertMessage from './AlertMessage';
 import { getAllNotes } from '../redux/slice/GetNotesSlice';
+import useAlert from '../customhook/useAlert';
 
 
 export default function EditNote({ modalRef, currentNoteData, isModalOpen }) {
@@ -11,7 +12,8 @@ export default function EditNote({ modalRef, currentNoteData, isModalOpen }) {
   const [edescription, setDescritpion] = useState('');
   const udpateStatus = useSelector(state => state.editNote.status);
   const updateRes = useSelector(state => state.editNote.data);
-  const [alert, setAlert] = useState(null);
+  const showAlert = useAlert();
+  const validationAlertMsg = useSelector(state => state.ValidationAlert.alert);
 
   /* 
   Always use useEffect when you want to set the data in the statevariable but we need to use setstate function of useState and we must to know that useState works when
@@ -38,28 +40,18 @@ export default function EditNote({ modalRef, currentNoteData, isModalOpen }) {
       this is behavior/beauty of spread. */
   };
 
+  // This useEffect use when we do update our data so Notes will be show with updated notes.
   useEffect(() => {
-    let timeoutId; 
     if (updateRes && updateRes[0] === 1) {
       if (udpateStatus === "success") {
-        setAlert({ type: udpateStatus, message: 'Data update Successfully!' });
+        showAlert({ type: udpateStatus, message: 'Data update Successfully!' });
         dispatch(getAllNotes());
-        timeoutId = setTimeout(() => {
-          setAlert(null);
-          dispatch(clearStatusMsg());
-        }, 1000);
       }
       else {
-        setAlert({ type: "danger", message: 'something went wrong!!' });
-        timeoutId = setTimeout(() => {
-          setAlert(null)
-          dispatch(clearStatusMsg());
-        }, 1000);
+        showAlert({ type: "danger", message: 'something went wrong!!' });
       }
     }
-
-    return () => clearTimeout(timeoutId);
-
+    dispatch(clearStatusMsg());
   }, [udpateStatus, updateRes]);
 
   return (
@@ -81,8 +73,8 @@ export default function EditNote({ modalRef, currentNoteData, isModalOpen }) {
               </div>
             </div>
             {
-              <div>
-                {alert && <AlertMessage alert={alert.type} message={alert.message} />}
+              <div className='errordiv'>
+                {validationAlertMsg && <AlertMessage alert={validationAlertMsg.type} message={validationAlertMsg.message} />}
               </div>
             }
             <div className="modal-footer">

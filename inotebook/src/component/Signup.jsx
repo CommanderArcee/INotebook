@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { signupUser } from '../redux/auth/page/signupSlice';
+import useAlert from '../customhook/useAlert';
+import AlertMessage from './AlertMessage';
 
 export default function Signup() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [username, setUername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const showAlert = useAlert();
+  const validationAlertMsg = useSelector(state => state.ValidationAlert.alert);
 
   const submitSignUpDetails = async (e) => {
     e.preventDefault();
@@ -20,10 +23,10 @@ export default function Signup() {
     }
     const signupData = await dispatch(signupUser({ name: username, email, password }));
     if (signupData.type === 'signupAPi/fulfilled') {
-      const {authToken , ErrorMsg} = signupData.payload;
+      const { authToken, ErrorMsg } = signupData.payload;
       if (authToken) {
         localStorage.setItem('token', authToken);
-        navigate("/Login");
+        showAlert({ type: "success", message: "Account created successfully !!" })
       }
       else if (ErrorMsg) {
         //setAuthError(result.payload.ErrorMsg);
@@ -57,8 +60,14 @@ export default function Signup() {
           <label htmlFor="cpassword" className="form-label">Confirm Password</label>
           <input type="password" className="form-control" id="cpassword" onChange={(ev) => setConfirmPassword(ev.target.value)} value={confirmPassword} minLength={5} required />
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <div className='d-flex justify-content-center'>
+          <button type="submit" className="btn btn-primary mx-2">Submit</button>
+          <Link className="btn btn-primary mx-2" to="/Login">Login</Link>
+        </div>
       </form>
+      <div className='errordiv'>
+        {validationAlertMsg && <AlertMessage alert={validationAlertMsg.type} message={validationAlertMsg.message} />}
+      </div>
     </div>
   )
 }
