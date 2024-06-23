@@ -1,9 +1,10 @@
 import React from 'react'
 
-const About = () => {
+const About = (props) => {
+  console.log(props);
   return (
     <div>
-      <h1>This is about page</h1>
+      <h1>{props.noteDesc}</h1>
     </div>
   )
 }

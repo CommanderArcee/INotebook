@@ -1,7 +1,18 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { clearNoteData } from '../redux/slice/GetNotesSlice';
 
 const Navbar = () => {
+  let navigate = useNavigate();
+  let dispatch = useDispatch();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    dispatch(clearNoteData());
+    navigate("/Login");
+  }
+
   return (
     <nav className="navbar navbar-expand-lg text-light bg-dark">
       <div className="container-fluid">
@@ -15,13 +26,15 @@ const Navbar = () => {
               <Link className="nav-link active" aria-current="page" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/about">About</Link>
+              <Link className="nav-link" to="/About">About</Link>
             </li>
           </ul>
-          <form className="d-flex">
-            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-              <button className="btn btn-outline-success" type="submit">Search</button>
-          </form>
+          {!localStorage.getItem("token") ?  
+            <form className="d-flex">
+            <Link className="btn btn-primary mx-2" to={'/Login'} role='button'>Login</Link>
+            <Link className="btn btn-primary mx-2" to={'/Signup'} role='button'>Signup</Link>
+          </form> : <button onClick={handleLogout} className="btn btn-primary">Logout</button>
+          }
         </div>
       </div>
     </nav>

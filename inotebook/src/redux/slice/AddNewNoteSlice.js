@@ -1,14 +1,14 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {api_url} from './GetNotesSlice';
+const apiUrl = process.env.REACT_APP_API_URl;
 
 
 // we can createasyncthunk is a action becasue with api we get data and where we can get data that was a action.
 export const addNotes = createAsyncThunk('addNotes', async ({title, description}) =>{
-    const response = await fetch(`${api_url}/api/notes/createnotes`, {
+    const response = await fetch(`${apiUrl}/notes/createnotes`, {
         method : "POST",
         headers : {
             "Content-Type": "application/json",
-            "auth-token": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEwMDEsImlhdCI6MTcxNzk1MTUxOX0.-uunOh4D9C5_C2MDxTJq91PmhFwaTLcl7N2kukuyuBY'
+            "auth-token": localStorage.getItem('token')
         },
         body: JSON.stringify({title, description})
     });
