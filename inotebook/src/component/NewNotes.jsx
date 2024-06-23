@@ -3,16 +3,18 @@ import { addNotes, clearDataMsgAfterSavedRecord } from '../redux/slice/AddNewNot
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import AlertMessage from './AlertMessage';
+import useAlert from '../customhook/useAlert';
 
 
 function NewNotes() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const status = useSelector((state) => state.addNewNote.isLoading);
   const data = useSelector((state) => state.addNewNote.data);
   const [title, setTitle] = useState("");
   const [description, setDescritpion] = useState("");
-  const [alert, setAlert] = useState(null);
-  const navigate = useNavigate();
+  const showAlert = useAlert();
+  const validationAlertMsg = useSelector(state => state.ValidationAlert.alert);
 
   const saveNotes = () => {
     let obj = {
@@ -38,11 +40,10 @@ function NewNotes() {
 
  useEffect(() => {
    if (data === "Success") {
-     setAlert({ type: 'success', message: 'Data added Successfully!' });
      dispatch(clearDataMsgAfterSavedRecord());  // As I useDispatch and call one function. So why we add here behind the logic explanation is in Home.jsx page.
      navigate('/');
     } else if (data) {
-      setAlert({ type: 'danger', message: 'Something went wrong..' });
+      showAlert({ type: 'danger', message: 'Something went wrong..' });
       dispatch(clearDataMsgAfterSavedRecord());
     }
   }, [data]);
@@ -60,8 +61,8 @@ function NewNotes() {
       </div>
       <button className="btn btn-primary" onClick={saveNotes}>Save</button>
       <Link className="btn btn-primary ms-2" to="/">Back to Notes</Link>
-      <div>
-        {alert && <AlertMessage alert={alert.type} message={alert.message} />}
+      <div className='errordiv'>
+        {validationAlertMsg && <AlertMessage alert={validationAlertMsg.type} message={validationAlertMsg.message} />}
       </div>
     </div>
   )

@@ -5,16 +5,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import { funcDeleteNote, clearDeleteMessage } from '../redux/slice/DeleteNotes';
 import ModalButton from './ModalButton';
 import EditNote from './EditNote';
+import AlertMessage from './AlertMessage';
+import useAlert from '../customhook/useAlert';
 
 
 // dispatch send the event action to reducer and then reducer do action when action gives some data after this it return data to store.
 const Home = () => {
-  const dispatch = useDispatch();
-  let navigate = useNavigate();
-  const allNotesData = useSelector(state => state.getNotes.data);
-  let deleteNoteMessage = useSelector(state => state.deleteNotes.deleteNoteMsg);
-  const [alert, setAlert] = useState(null);
   const useModalRef = useRef(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const showAlert = useAlert();
+  const validationAlertMsg = useSelector(state => state.ValidationAlert.alert);
+  const allNotesData = useSelector(state => state.getNotes.data);
+  const deleteNoteMessage = useSelector(state => state.deleteNotes.deleteNoteMsg);
   const [currentData, setCurrentData] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -31,7 +34,7 @@ const Home = () => {
   useEffect(() => {
     if (deleteNoteMessage) {
       dispatch(getAllNotes());
-      setAlert({ type: "success", message: deleteNoteMessage });
+      showAlert({type : "success" , message : deleteNoteMessage});
       dispatch(clearDeleteMessage());
     }
   }, [deleteNoteMessage]);
@@ -54,8 +57,16 @@ const Home = () => {
     }
   }, [isModalOpen, currentData]);
 
+
   return (
     <>
+      <div className='errordiv'>
+        { validationAlertMsg && <AlertMessage alert={validationAlertMsg.type} message={validationAlertMsg.message}/>}
+      </div>
+      <div className='col-md-6 offset-md-3 my-3'>
+        {allNotesData ? <div></div> : <h1>No Notes created by this user</h1>}
+        <Link className='btn btn-primary px-5' to="/AddNote">Add Note</Link>
+      </div>
       {
         allNotesData && allNotesData.map(data => {
           return (
@@ -64,7 +75,9 @@ const Home = () => {
                 <div className="card-body">
                   <div className="d-flex align-items-center">
                     <h5 className="card-title">{data.Title}</h5>
-                    <i className="fa-solid fa-trash-can mx-2" onClick={() => dispatch(funcDeleteNote(data.NotesId))}
+                    <i
+                      className="fa-solid fa-trash-can mx-2"
+                      onClick={() => dispatch(funcDeleteNote(data.NotesId))}
                     ></i>
                     <ModalButton
                       onOpenModal={handleOpenModal}
@@ -81,16 +94,12 @@ const Home = () => {
                   </div>
                   <p className="card-text">{data.Description}</p>
                 </div>
-                <button onClick={(e) => dispatch(getAllNotes())}>Show Note</button>
+                <Link to="/About" className='btn btn-newcolor'>Show Note</Link>
               </div>
             </div>
           )
         })
       }
-      <div className='col-md-6 offset-md-3 my-3'>
-        {allNotesData ? <div></div> : <h1>No Notes created by this user</h1>}
-        <Link className='btn btn-primary' to="/AddNote">Add Note</Link>
-      </div>
     </>
   )
 }

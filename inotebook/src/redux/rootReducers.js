@@ -7,6 +7,7 @@ import DeleteNotesReducer from './slice/DeleteNotes';
 import editNoteReducer from './slice/UpdateNoteSlice';
 import loginReducer from './auth/page/loginSlice';
 import signupReducer from './auth/page/signupSlice';
+import alertReducer from './slice/AlertSlice';
 
 const rootReducer = combineReducers({
     // Syntax -> name of reducer which we given at time of cretae reducer : import Reducer from file which we export wtih the reducer method.
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     deleteNotes : DeleteNotesReducer,
     editNote : editNoteReducer,
     login : loginReducer,
-    signup : signupReducer
+    signup : signupReducer,
+    ValidationAlert : alertReducer
 });
 
 export default rootReducer;
