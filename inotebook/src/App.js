@@ -7,8 +7,9 @@ import About from './component/About';
 import NewNotes from './component/NewNotes';
 import Login from './component/Login';
 import Signup from './component/Signup';
+import ForgotPassword from './component/ForgotPassword';
 
-// We use BrowserRouter in the index.js file and add main component because other component used inside the main that's why we call main inside the BrowserROuter and, we
+// We use BrowserRouter in the index.js file and add main component because other component used inside the main that's why we call main inside the BrowserRouter and, we
 // are able to use routing in whole application.
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route exact path='/AddNote' element={<NewNotes />} />
             <Route exact path='/login' element={<Login />} />
             <Route exact path='/signup' element={<Signup/>} />
+            <Route exact path='/Forgotpassword' element={<ForgotPassword/>} />
           </Routes>
         </div>
       </div>

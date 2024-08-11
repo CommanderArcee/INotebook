@@ -32,7 +32,21 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.labelTxt {
+  font-size: 25px;
+  font-family: -webkit-body;
+}
+
+.font-family-cursive{
+    font-family: cursive;
+}
+
+.bg-red{
+  background-color: #e12929de !important;
 }

@@ -8,7 +8,9 @@ module.exports = {
     "host": process.env.REACT_APP_HOST,
     "dialect": process.env.REACT_APP_DIALECT,
     "SQL_PORT": process.env.REACT_APP_SQL_PORT,
-    "JWT_SECRET" : process.env.REACT_APP_JWT_SECRET
+    "JWT_SECRET" : process.env.REACT_APP_JWT_SECRET,
+    "Email_User" : process.env.EMAIL_USER,
+    "Email_Password" : process.env.EMAIL_PASSWORD
   },
   test: {
     "username": "root",
@@ -25,3 +27,32 @@ module.exports = {
     "dialect": "mssql"
   }
 }
+
+
+/*
+Backend config.
+development: {
+  "username": process.env.USER, 
+  "password": process.env.PASSWORD,
+  "database": process.env.DB,
+  "host": process.env.HOST,
+  "dialect": process.env.DIALECT,
+  "SQL_PORT": process.env.SQL_PORT,
+  "JWT_SECRET" : process.env.JWT_SECRET,
+  "Email_User" : process.env.EMAIL_USER,
+  "Email_Password" : process.env.EMAIL_PASSWORD
+},
+
+--when react use
+development: {
+    "username": process.env.REACT_APP_USER, 
+    "password": process.env.REACT_APP_PASSWORD,
+    "database": process.env.REACT_APP_DB,
+    "host": process.env.REACT_APP_HOST,
+    "dialect": process.env.REACT_APP_DIALECT,
+    "SQL_PORT": process.env.REACT_APP_SQL_PORT,
+    "JWT_SECRET" : process.env.REACT_APP_JWT_SECRET,
+    "Email_User" : process.env.EMAIL_USER,
+    "Email_Password" : process.env.EMAIL_PASSWORD
+  },
+*/

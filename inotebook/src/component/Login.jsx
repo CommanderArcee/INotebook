@@ -21,7 +21,7 @@ export default function Login() {
         if (result.type === 'loginUser/fulfilled') {
             const { authToken, ErrorMsg } = result.payload;
             if (authToken) {
-                localStorage.setItem('token', authToken);
+                localStorage.setItem('token', authToken.split(":")[1]);
                 navigate("/");
             }
             else if (ErrorMsg) {
@@ -52,7 +52,7 @@ export default function Login() {
                         </div>
                     </div>
                     <div className='text-end'>
-                        <Link id="forgotpassword" className="form-text">Forgot Password</Link>
+                        <Link id="forgotpassword" to={"/Forgotpassword"} className="form-text">Forgot Password</Link>
                     </div>
                     <div className="col-12 mt-3">
                         <button className="btn btn-primary" type="submit">Login</button>
