@@ -6,7 +6,6 @@ const useAlert =  () => {
     const dispatch = useDispatch();
 
     const showAlert = ({type , message}) => {
-        console.log({type , message});
         dispatch(setAlerts({type , message}));
 
         setTimeout(() => {

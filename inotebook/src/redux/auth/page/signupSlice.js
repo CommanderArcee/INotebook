@@ -9,8 +9,9 @@ export const signupUser = createAsyncThunk('signupAPi', async ({name, email, pas
         },
         body : JSON.stringify({name, email, password})
     });
-    const responseData = await response.json();
-    return responseData;
+    const responseData = await response.text();
+    const authToken = response.headers.get('Authorization');// Get the token from headers
+    return {responseData, authToken};
 });
 
 const signupSlice = createSlice({

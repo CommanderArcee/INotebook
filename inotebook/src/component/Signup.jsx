@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { signupUser } from '../redux/auth/page/signupSlice';
 import useAlert from '../customhook/useAlert';
 import AlertMessage from './AlertMessage';
@@ -12,6 +12,7 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const showAlert = useAlert();
+  const navigate = useNavigate;
   const validationAlertMsg = useSelector(state => state.ValidationAlert.alert);
 
   const submitSignUpDetails = async (e) => {
@@ -25,8 +26,8 @@ export default function Signup() {
     if (signupData.type === 'signupAPi/fulfilled') {
       const { authToken, ErrorMsg } = signupData.payload;
       if (authToken) {
-        localStorage.setItem('token', authToken);
-        showAlert({ type: "success", message: "Account created successfully !!" })
+        localStorage.setItem('token', authToken.split(":")[1]);
+        showAlert({ type: "success", message: "Account created successfully !!" });
       }
       else if (ErrorMsg) {
         //setAuthError(result.payload.ErrorMsg);
