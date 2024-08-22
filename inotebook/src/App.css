@@ -50,3 +50,12 @@
 .bg-red{
   background-color: #e12929de !important;
 }
+
+.username-fontsize {
+  font-size: 18px;
+}
+
+.heading {
+  font-family: ui-monospace;
+  font-size: 40px;
+}

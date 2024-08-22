@@ -41,7 +41,7 @@ const OtpSlice = createSlice({
         },
         clearVerifyDataErrorMsg : (state) => {
             state.verifyData = null
-        },
+        }
     },
     extraReducers : (builder) => {
         builder.addCase(otpSendMail.pending, (state, action) => {

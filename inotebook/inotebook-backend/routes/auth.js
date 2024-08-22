@@ -33,7 +33,7 @@ router.post('/api/auth/createUser', [handleEmail, handlePassword], async (req, r
         });
 
         const options = {
-            expiresIn: '10m' // Set the token to expire in 1 hour
+            expiresIn: '1h' // Set the token to expire in 1 hour
         };
 
         const data = {
@@ -66,18 +66,18 @@ router.post('/api/auth/login', [handleEmail, handlePassword], async (req, res) =
         //vlaidate the user who exist or not.
         let existingUser = await findByFilter(email);
         if (!existingUser) {
-            return res.send({ ErrorMsg: "No Existing User" });
+            return res.send({ErrorMsg:"No Existing User"});
         }
 
         // validate the user's password that password is valid or not.
         let validPassword = await verifyPassword(password, existingUser.Password);
 
         if (!validPassword) {
-            return res.send({ ErrorMsg: "Invalid Credentials" });
+            return res.send({ErrorMsg:"Invalid Credentials"});
         }
 
         const options = {
-            expiresIn: '10m' // Set the token to expire in 1 hour
+            expiresIn: '1h' // Set the token to expire in 1 hour
         };
 
         const payload = {
@@ -92,7 +92,7 @@ router.post('/api/auth/login', [handleEmail, handlePassword], async (req, res) =
         res.setHeader('Authorization', `Bearer:${authToken}`);
         // Above both ways we can set the header in response and to get info. from response header for this we need to add exposedHeader key in cors then able to get info from res header.
 
-        res.send("User Successfully Logged In");
+        res.send({SuccessMsg :"User Successfully Logged In"});
 
     } catch (err) {
         console.log(`error : ${err.message}`);
@@ -102,11 +102,12 @@ router.post('/api/auth/login', [handleEmail, handlePassword], async (req, res) =
 
 // API/Router 3: Get LoggedIn user details : login details required.
 /* So we create middleware so that we use that anywhere. and we know we call the middleware in the httpmethods before callback function. */
-router.post('/api/auth/getuser', LoggedInUserDetails, async (req, res) => {
+router.get('/api/auth/getuser', LoggedInUserDetails, async (req, res) => {
     try {
         // What method we used with our model Users this methods given by sequelize.
         const userDetails = await Users.findByPk(req.user.UserId);
-        res.send(userDetails);
+        const {Name, Email} = userDetails;
+        res.send({Name, Email});
 
     } catch (err) {
         console.log(`error : ${err.message}`);
@@ -119,11 +120,11 @@ router.post('/api/auth/changePassword', async (req, res) => {
     try {
         // Here userEmail already validated when otp verified. That's why , we do not validate here.
         // Here we we use userId becasue we implement this changePassword when user want after login.
-        let { email, newPassword, Verify, IsActive, IsValidOtp } = req.body;
+        let { email, newPassword, Verify, IsActive, IsValidOtp, isChangePassword } = req.body;
 
         const validUser = await findByFilter(email);  
 
-        if (Verify === 1 && IsActive === 1 && IsValidOtp === 1) {
+        if ((Verify === 1 && IsActive === 1 && IsValidOtp === 1) || isChangePassword === 1) {
 
             const newHashPass = await createHashPassword(newPassword);
 

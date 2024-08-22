@@ -9,7 +9,7 @@ export const loginUser = createAsyncThunk('loginUser' , async ({email, password}
         },
         body : JSON.stringify({email, password})
     });
-    const responseData = await response.text();
+    const responseData = await response.json();
     const authToken = response.headers.get('Authorization');// Get the token from headers
     return {responseData, authToken};
     // as we know this response result shows in extra reducer's action.payload that's we return from method inside in async thunk and it call in builder so that's why we set the data 

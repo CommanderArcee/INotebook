@@ -19,7 +19,9 @@ export default function Otp(props) {
         const nowUTCDate = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
         const currentDateOtp = new Date(nowUTCDate).toUTCString();
         dispatch(funcVerifyOtp({ userEmail: props.email, userEnteredOtp: otp, currentDateTimeOfOtp: currentDateOtp }));
-        if(verifiedData?.Verify === 1) alert("Otp Verified");
+        if (verifiedData?.Verify === 1) {
+            alert("Otp Verified");
+        }
     }
 
     useEffect(() => {
