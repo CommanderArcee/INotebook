@@ -7,6 +7,7 @@ import ModalButton from './ModalButton';
 import EditNote from './EditNote';
 import AlertMessage from './AlertMessage';
 import useAlert from '../customhook/useAlert';
+import { getLoggedInUserDetails } from '../redux/auth/page/GetUserDetailsSlice';
 
 
 // dispatch send the event action to reducer and then reducer do action when action gives some data after this it return data to store.
@@ -21,10 +22,10 @@ const Home = () => {
   const [currentData, setCurrentData] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
 
-
   useEffect(() => {
     if (localStorage.getItem('token')) {
       dispatch(getAllNotes());
+      dispatch(getLoggedInUserDetails());
     }
     else {
       navigate("/Login");
@@ -34,7 +35,7 @@ const Home = () => {
   useEffect(() => {
     if (deleteNoteMessage) {
       dispatch(getAllNotes());
-      showAlert({type : "success" , message : deleteNoteMessage});
+      showAlert({ type: "success", message: deleteNoteMessage });
       dispatch(clearDeleteMessage());
     }
   }, [deleteNoteMessage]);
@@ -42,7 +43,6 @@ const Home = () => {
   const handleOpenModal = () => {
     setModalOpen(true);
   };
-
 
   useEffect(() => {
     if (isModalOpen && useModalRef.current) {
@@ -61,16 +61,20 @@ const Home = () => {
   return (
     <>
       <div className='errordiv'>
-        { validationAlertMsg && <AlertMessage alert={validationAlertMsg.type} message={validationAlertMsg.message}/>}
+        {validationAlertMsg && <AlertMessage alert={validationAlertMsg.type} message={validationAlertMsg.message} />}
       </div>
-      <div className='col-md-6 offset-md-3 my-3'>
+      <div className='col-md-8 offset-md-3 my-3 d-flex'>
+        <form className="d-flex">
+          <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+          <button className="btn btn-outline-success me-5" type="submit">Search</button>
+        </form>
         {allNotesData ? <div></div> : <h1>No Notes created by this user</h1>}
         <Link className='btn btn-primary px-5' to="/AddNote">Add Note</Link>
       </div>
       {
         allNotesData && allNotesData.map(data => {
           return (
-            <div className='col-md-4' key={data.NotesId}>
+            <div className='col-md-4 mt-3' key={data.NotesId}>
               <div className="card my-3">
                 <div className="card-body">
                   <div className="d-flex align-items-center">
@@ -108,11 +112,3 @@ const Home = () => {
 
 export default Home;
 
-
-/*
-Note :-
- Now I understand how to use state in redux. we use state with the reducer. Create another reducer and use the state. what you want like in this.
- we need to null the deleteNoteMsg and we know will achieved by state only but when we use the useState here we don't get the result. And when I create
- another reducer function where i set the state of deleteNotemsg is null. and export that reducer becasue its a action that's we export this from action.
- By this we are using the state with the reducer.
- */

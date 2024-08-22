@@ -5,6 +5,7 @@ import AlertMessage from './AlertMessage';
 import { funcChangePassword } from '../redux/auth/page/PasswordChangeSlice';
 import Otp from './Otp';
 
+
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -14,14 +15,9 @@ export default function ForgotPassword() {
   const dispatch = useDispatch();
   const otpData = useSelector(state => state.otp);
   let verifiedData = otpData?.verifyData;
-  let status = otpData.verifyStatus;
-
-  console.log(verifiedData);
 
   const forgotPassword = async (ev) => {
     ev.preventDefault();
-
-    let {Verify, IsActive, IsValidOtp} = verifiedData;
 
     if (newPassword.length < 6) {
       showAlert({ type: "danger", message: "Your password length should be min 5" });
@@ -32,8 +28,7 @@ export default function ForgotPassword() {
       return;
     }
     else {
-      const result = await dispatch(funcChangePassword({ email, newPassword, Verify, IsActive, IsValidOtp }));
-      console.log(result);
+      const result = await dispatch(funcChangePassword({ email, newPassword,  ...verifiedData }));
       let { SuccessMsg, ErrorMsg } = result.payload;
 
       if (result.type === 'Change_ForgotPassword/fulfilled') {
@@ -46,11 +41,12 @@ export default function ForgotPassword() {
         alert("loading");
       }
     }
-  }
+  } 
 
   return (
     <div className='col-md-6 offset-md-3 my-3 mt-5'>
       <form onSubmit={forgotPassword}>
+        {localStorage.getItem("isChangePassword") === "1" ? <h2 className='mb-5 heading'>Change Password</h2> : <h2 className='mb-5 heading'>Forgot Password</h2>}
         <div className="mb-3 d-flex">
           <div className='col-md-4'>
             <label htmlFor="email" className="form-label labelTxt lh-5">Email</label>
@@ -59,7 +55,9 @@ export default function ForgotPassword() {
             <input type="email" className="form-control" id="Email" aria-describedby="email" onChange={(e) => setEmail(e.target.value)} value={email} />
           </div>
         </div>
-        <Otp email={email} />
+        {
+          localStorage.getItem("isChangePassword") === "1" ? <></> : <Otp email={email} />
+        }
         <div className="mb-3 d-flex">
           <div className='col-md-4'>
             <label htmlFor="newpassword" className="form-label labelTxt">New Password</label>
@@ -76,7 +74,7 @@ export default function ForgotPassword() {
             <input type="password" className="form-control" id="confirmpassword" name='confirmpassword' onChange={(e) => setconfirmPassword(e.target.value)} value={confirmPassword} />
           </div>
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" disabled={localStorage.getItem("isChangePassword") === "1" ? (!newPassword) : !(verifiedData?.Verify)} className="btn btn-primary">Submit</button>
       </form>
       <div className='errordiv'>
         {validationAlertMsg && <AlertMessage alert={validationAlertMsg.type} message={validationAlertMsg.message} />}

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/auth/page/loginSlice';
 import useAlert from '../customhook/useAlert';
 import AlertMessage from './AlertMessage';
+import { getLoggedInUserDetails } from '../redux/auth/page/GetUserDetailsSlice';
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -22,6 +23,7 @@ export default function Login() {
             const { authToken, ErrorMsg } = result.payload;
             if (authToken) {
                 localStorage.setItem('token', authToken.split(":")[1]);
+                await dispatch(getLoggedInUserDetails());
                 navigate("/");
             }
             else if (ErrorMsg) {
