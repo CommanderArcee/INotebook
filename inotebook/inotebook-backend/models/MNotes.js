@@ -27,8 +27,10 @@ const model = (sequelize) => {
                 model: 'Users', // Target model name (replace with your actual model)
                 key: 'UserId' // Target model's primary key column (replace if different)
               }
-        } 
-        // with the help of sequelize.sync method this column will be add in table. That's why we use this this method.        
+        }, 
+        NoteTag : {
+            type : DataTypes.STRING, 
+        }        
     }
     const options = {
         freezeTableName: true,
