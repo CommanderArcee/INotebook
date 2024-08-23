@@ -59,3 +59,23 @@
   font-family: ui-monospace;
   font-size: 40px;
 }
+
+.dropdown-border{
+  border: 4px solid #1b4789;
+  border-radius: 10px;
+}
+
+.label-heading {
+  font-family: ui-monospace;
+  font-size: 26px;
+}
+
+.dropdown-label {
+  line-height: 37px;
+  font-size: 25px;
+  font-family: ui-monospace;
+}
+
+.bg-dark-nav{
+  
+}
