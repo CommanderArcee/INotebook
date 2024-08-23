@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import AlertMessage from './AlertMessage';
 import useAlert from '../customhook/useAlert';
-
+import TagsDropdown, { handleChangeTagDrpDwnVal } from './TagsDropdown';
+import { getLoggedInUserDetails } from '../redux/auth/page/GetUserDetailsSlice';
 
 function NewNotes() {
   const dispatch = useDispatch();
@@ -16,18 +17,31 @@ function NewNotes() {
   const showAlert = useAlert();
   const validationAlertMsg = useSelector(state => state.ValidationAlert.alert);
 
+  useEffect(() => {
+    dispatch(getLoggedInUserDetails());
+  }, []); 
+
   const saveNotes = () => {
+    let noteTagValue = handleChangeTagDrpDwnVal();
+
+    if(noteTagValue === "-1") {
+      showAlert({type : "danger" , message : "Please Select Note Tag"});
+      return;
+    }
+
     let obj = {
       title,
-      description
+      description,
+      noteTag : noteTagValue
     }
     if (!status) {
       dispatch(addNotes(obj));
     }
   }
 
+
   const handleOnChange = (ev) => {
-    let {name} = ev.target;
+    let { name } = ev.target;
     // Now we don't need textcontent attribute. if we use desctructuring. So we use name attribute in tag to get correct data.
 
     if (name === 'title') {
@@ -38,10 +52,10 @@ function NewNotes() {
     }
   }
 
- useEffect(() => {
-   if (data === "Success") {
-     dispatch(clearDataMsgAfterSavedRecord());  // As I useDispatch and call one function. So why we add here behind the logic explanation is in Home.jsx page.
-     navigate('/');
+  useEffect(() => {
+    if (data === "Success") {
+      dispatch(clearDataMsgAfterSavedRecord());  // As I useDispatch and call one function. So why we add here behind the logic explanation is in Home.jsx page.
+      navigate('/');
     } else if (data) {
       showAlert({ type: 'danger', message: 'Something went wrong..' });
       dispatch(clearDataMsgAfterSavedRecord());
@@ -50,19 +64,25 @@ function NewNotes() {
 
 
   return (
-    <div className='col-md-6 offset-md-3 my-3'>
-      <div className="mb-3">
-        <label htmlFor="title" className="form-label">Title</label>
-        <input type="title" className="form-control" id="title" aria-describedby="title" name="title" onChange={handleOnChange} value={title} />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="description" className="form-label">Description</label>
-        <textarea className="form-control" id="description" rows="3" name='description' onChange={handleOnChange} value={description}></textarea>
-      </div>
-      <button className="btn btn-primary" onClick={saveNotes}>Save</button>
-      <Link className="btn btn-primary ms-2" to="/">Back to Notes</Link>
-      <div className='errordiv'>
-        {validationAlertMsg && <AlertMessage alert={validationAlertMsg.type} message={validationAlertMsg.message} />}
+    <div className='col-md-12 col-sm-12'>
+      <div className='col-md-6 col-sm-6 offset-md-3'>
+        <div className="mb-3">
+          <label htmlFor="title" className="form-label label-heading">Title</label>
+          <input type="title" className="form-control" id="title" aria-describedby="title" name="title" onChange={handleOnChange} value={title} />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="description" className="form-label label-heading">Description</label>
+          <textarea className="form-control" id="description" rows="3" name='description' onChange={handleOnChange} value={description}></textarea>
+        </div>
+        <div className="col-md-8 col-sm-8 offset-md-6 d-flex mt-5">
+          <label htmlFor="description" className="form-label dropdown-label">Note tag</label>
+          <TagsDropdown/>
+        </div>
+        <button className="btn btn-primary my-5" onClick={saveNotes}>Save</button>
+        <Link className="btn btn-primary ms-2" to="/">Back to Notes</Link>
+        <div className='errordiv'>
+          {validationAlertMsg && <AlertMessage alert={validationAlertMsg.type} message={validationAlertMsg.message} />}
+        </div>
       </div>
     </div>
   )
