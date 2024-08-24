@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import AlertMessage from './AlertMessage';
 import useAlert from '../customhook/useAlert';
-import TagsDropdown, { handleChangeTagDrpDwnVal } from './TagsDropdown';
+import TagsDropdown from './TagsDropdown';
 import { getLoggedInUserDetails } from '../redux/auth/page/GetUserDetailsSlice';
+import { clearNotetag } from '../redux/slice/NoteTagSlice';
 
 function NewNotes() {
   const dispatch = useDispatch();
@@ -16,15 +17,16 @@ function NewNotes() {
   const [description, setDescritpion] = useState("");
   const showAlert = useAlert();
   const validationAlertMsg = useSelector(state => state.ValidationAlert.alert);
+  const noteTagState = useSelector(state => state.noteTag.tagValue);
 
   useEffect(() => {
     dispatch(getLoggedInUserDetails());
   }, []); 
 
   const saveNotes = () => {
-    let noteTagValue = handleChangeTagDrpDwnVal();
+    let {selectedNoteTagValue} = noteTagState;
 
-    if(noteTagValue === "-1") {
+    if(selectedNoteTagValue === "-1") {
       showAlert({type : "danger" , message : "Please Select Note Tag"});
       return;
     }
@@ -32,10 +34,11 @@ function NewNotes() {
     let obj = {
       title,
       description,
-      noteTag : noteTagValue
+      noteTag : selectedNoteTagValue
     }
     if (!status) {
       dispatch(addNotes(obj));
+      dispatch(clearNotetag());
     }
   }
 

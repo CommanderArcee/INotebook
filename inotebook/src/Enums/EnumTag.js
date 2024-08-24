@@ -3,7 +3,7 @@
 // -> If want to add new property so you need to add that new property inside the object.freeze of enum. 
 
 const Tags = Object.freeze({
-    DailyNeeds : "DN",
+    DailyNeeds : "DNEEDS",
     BuisnessPurpose : "BUSPURP",
     Sports : "SPORTS",
     OfficeWork : "OFFWRK",
