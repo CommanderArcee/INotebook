@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import tags from '../Enums/EnumTag';
-
-export const handleChangeTagDrpDwnVal = () => {
-    let selectValue = document.getElementById('notetagDrpdwn').value;
-    return selectValue;
-}
+import { useDispatch } from 'react-redux';
+import { setNotetag } from '../redux/slice/NoteTagSlice';
 
 export default function TagsDropdown(props) {
+    let dispatch = useDispatch();
+
+    const handleChangeTagDrpDwnVal = () => {
+        let selectedNoteTagValue = document.getElementById('notetagDrpdwn')?.value;
+        dispatch(setNotetag({selectedNoteTagValue}));
+    }
 
     return (
         <select className='dropdown btn dropdown-header mx-5 dropdown-border' id='notetagDrpdwn' onChange={handleChangeTagDrpDwnVal}>

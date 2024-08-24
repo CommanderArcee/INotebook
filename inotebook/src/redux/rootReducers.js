@@ -11,6 +11,7 @@ import alertReducer from './slice/AlertSlice';
 import forgotPasswordReducer from './auth/page/PasswordChangeSlice';
 import otpReducer from './auth/page/OtpSlice';
 import LoggedInUserDetailReducer from './auth/page/GetUserDetailsSlice';
+import NoteTagReducer from './slice/NoteTagSlice';
 
 const rootReducer = combineReducers({
     // Syntax -> name of reducer which we given at time of cretae reducer : import Reducer from file which we export wtih the reducer method.
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
     ValidationAlert : alertReducer,
     forgotPassword : forgotPasswordReducer,
     otp : otpReducer,
-    loggedInUserDetail : LoggedInUserDetailReducer
+    loggedInUserDetail : LoggedInUserDetailReducer,
+    noteTag : NoteTagReducer
 });
 
 export default rootReducer;
