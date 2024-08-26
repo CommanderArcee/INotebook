@@ -3,14 +3,14 @@ const apiUrl = process.env.REACT_APP_API_URl;
 
 
 // we can createasyncthunk is a action becasue with api we get data and where we can get data that was a action.
-export const addNotes = createAsyncThunk('addNotes', async ({title, description}) =>{
+export const addNotes = createAsyncThunk('addNotes', async ({title, description, noteTag}) =>{
     const response = await fetch(`${apiUrl}/notes/createnotes`, {
         method : "POST",
         headers : {
             "Content-Type": "application/json",
             "auth-token": localStorage.getItem('token')
         },
-        body: JSON.stringify({title, description})
+        body: JSON.stringify({title, description, noteTag})
     });
     
     // by text() method which is used with response. So we send text in response from backend.

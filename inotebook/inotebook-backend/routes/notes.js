@@ -13,7 +13,9 @@ router.get('/api/notes/getallnotes',
     async (req, res) => {
         try {
             const { UserId } = req.user;
+
             const allRecordsofUser = await getRecordsOnUserId(UserId);
+
             res.send(allRecordsofUser);
         }
         catch (err) {
@@ -31,15 +33,20 @@ router.post('/api/notes/createnotes',
             return res.send(error);
         }
         try {
-            const { title, description } = req.body;
+            const { title, description, noteTag } = req.body;
+            console.log({ title, description, noteTag } )
             const newNotes = {
                 Title: title,
                 Description: description,
                 user_id: req.user.UserId,
-                Date: Date.now()
+                Date: Date.now(),
+                NoteTag : noteTag
             };
+
             const result = await Notes.create(newNotes);
+
             res.send("Success");
+
         } catch (error) {
             console.log(error);
             res.send("Error");

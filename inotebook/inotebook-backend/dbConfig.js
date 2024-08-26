@@ -1,6 +1,7 @@
 const { Sequelize } = require("sequelize");
 const Users = require("./models/MUsers");
 const Notes = require("./models/MNotes");
+const mOtp = require("./models/MOtp.js");
 const config = require('./config/config.js');
 // In config.js we add details/we can say add connectionstring of sql. Here, by config.json we connect sequelize with DB.
 // That's why we create 3environment in config.js. So when we deploy our application we add details connectionString as per env(like production,test).
@@ -16,11 +17,13 @@ const sequelize = new Sequelize(
     port: config.development.SQL_PORT,
     dialect: config.development.dialect
   }
-); 
+);
 
 db.Users = Users(sequelize);
 db.Notes = Notes(sequelize);
+db.MOtp = mOtp(sequelize);
 
+/*
 const checkAndSetInitialValue = async (tableName, desiredValue) => {
   const result = await sequelize.query(`
     SELECT IDENT_CURRENT('${tableName}') AS currentIdentity
@@ -41,24 +44,24 @@ const setInitialValueIdentityColumns = () => {
     checkAndSetInitialValue('Users', 1000),
     checkAndSetInitialValue('Notes', 10000)
   ]);
-}
+} 
 
 // sync all models with database.
 // with sync no need to create migration file and code. By this we refactor the promise chaining into async-await.
 const databaseSync = async () => {
-  try{
+  try {
     await sequelize.sync({ alter: true });
     console.log("tables are synced");
 
     await setInitialValueIdentityColumns();
     console.log('Identity column initial value set.');
   }
-  catch(e){
+  catch (e) {
     console.error('Unable to create database & tables:', e);
   }
 }
-
-databaseSync();
+*/
+//databaseSync();
 module.exports = db;
 
 

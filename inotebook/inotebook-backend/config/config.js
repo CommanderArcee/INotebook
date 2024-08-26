@@ -8,7 +8,9 @@ module.exports = {
     "host": process.env.REACT_APP_HOST,
     "dialect": process.env.REACT_APP_DIALECT,
     "SQL_PORT": process.env.REACT_APP_SQL_PORT,
-    "JWT_SECRET" : process.env.REACT_APP_JWT_SECRET
+    "JWT_SECRET" : process.env.REACT_APP_JWT_SECRET,
+    "Email_User" : process.env.EMAIL_USER,
+    "Email_Password" : process.env.EMAIL_PASSWORD
   },
   test: {
     "username": "root",
@@ -25,3 +27,4 @@ module.exports = {
     "dialect": "mssql"
   }
 }
+
