@@ -93,7 +93,7 @@ router.post('/api/otp/verifyOtp', async (req, res) => {
                 return res.send({ ErrorMsg: "Otp Expired" });
             }
             else {
-                await MOtp.update({ Verify: 1, VerifiedAt: new Date() }, {
+                await MOtp.update({ Verify: 1, VerifiedAt: new Date(), IsActive : 1, IsValidOtp :  1 }, {
                     where: {
                         Email: userEmail,
                         Otp: userEnteredOtp
