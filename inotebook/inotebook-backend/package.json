@@ -4,7 +4,8 @@
   "description": "INotebook - Your notes will be on cloud.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
