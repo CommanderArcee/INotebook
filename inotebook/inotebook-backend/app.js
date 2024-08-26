@@ -5,7 +5,7 @@ const cors = require("cors");
 const EmailService = require('./Services/EmailService');
 const app = express();
 
-//const port = process.env.port || 5000 ;  Inseated of this we have used portfinder npm package.
+const PORT = process.env.PORT || 5000; // process.env.port -> its basicallt used for production/
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -13,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 //app.use(cors());  // to enable cors
+
 app.use(cors({
   origin: '*', // or specify the allowed origin
   exposedHeaders: ['Authorization']
@@ -23,21 +24,10 @@ app.use(require('./routes/auth'));
 app.use(require('./routes/notes'));
 app.use(require('./routes/otp'));
 
-//const portfinder = require('portfinder');
 
-const PORT = process.env.PORT || 8085; // Change the port number here
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-// portfinder.getPort((err, port) => {
-//   if (err) {
-//     console.error(err);
-//     return;
-//   }
-//   app.listen(port, () => {
-//     console.log(`Server running on port ${port}`);
-//   });
-// });
 
 

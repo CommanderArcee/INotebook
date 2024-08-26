@@ -1,7 +1,4 @@
-const baseUrl = process.env.REACT_APP_API_URl;
 
-const api = {
-    getLoggedInUserDetails : `${baseUrl}/auth/getuser`
-}
+const baseAPIUrl = `http://localhost:${process.env.PORT}/api`;
 
-module.exports = api;
+module.exports = baseAPIUrl;

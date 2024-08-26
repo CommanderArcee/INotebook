@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-const apiUrl = process.env.REACT_APP_API_URl;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 // createasyncthunk is a action.
 export const getAllNotes = createAsyncThunk('getAllNotes', async () => {

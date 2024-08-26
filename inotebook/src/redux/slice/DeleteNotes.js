@@ -1,6 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-const apiUrl = process.env.REACT_APP_API_URl;
-
+const apiUrl = process.env.REACT_APP_API_URL;
 
 // we can createasyncthunk is a action becasue with api we get data and where we can get data that was a action.
 export const funcDeleteNote = createAsyncThunk('funcDeleteNote', async (id) =>{
