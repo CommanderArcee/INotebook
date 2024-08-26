@@ -2,9 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllNotes } from '../redux/slice/GetNotesSlice';
 import { Link, useNavigate } from 'react-router-dom';
-import { funcDeleteNote, clearDeleteMessage } from '../redux/slice/DeleteNotes';
-import ModalButton from '../component/ModalButton';
-import EditNote from '../component/EditNote';
+import { clearDeleteMessage } from '../redux/slice/DeleteNotes';
 import AlertMessage from '../component/AlertMessage';
 import useAlert from '../customhook/useAlert';
 import { getLoggedInUserDetails } from '../redux/auth/page/GetUserDetailsSlice';
@@ -14,7 +12,6 @@ import NotesCard from '../component/NotesCard';
 
 // dispatch send the event action to reducer and then reducer do action when action gives some data after this it return data to store.
 const Home = () => {
-  const useModalRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const showAlert = useAlert();
@@ -34,7 +31,6 @@ const Home = () => {
   useEffect(() => {
     setFilteredNotes(filterNotes(userNotes, noteTagState?.selectedNoteTagValue));
   }, [userNotes, noteTagState?.selectedNoteTagValue]);
-
 
   // Fetch notes and user details on component mount
   useEffect(() => {
@@ -70,9 +66,9 @@ const Home = () => {
         </div>
         <div className='col-md-9 my-3 d-flex'>
           <form className="col-md-7 col-sm-7 col-lg-7 d-flex">
-            <input className="form-control me-5" type="search" placeholder="Search Notes" aria-label="Search" px-5 />
+            <input className="form-control me-5" type="search" placeholder="Search Notes" aria-label="Search"/>
           </form>
-          {filteredNotes ? <div></div> : <h1>No Notes created by this user</h1>}
+          {filteredNotes ? <div></div> : <div><h1>No Notes created by this user</h1></div>}
           <Link className='btn btn-primary px-5' to="/AddNote">Add Note</Link>
         </div>
       </div>
