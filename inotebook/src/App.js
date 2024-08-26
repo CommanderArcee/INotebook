@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import Home from './pages/Home';
 import Navbar from './component/Navbar';
 import About from './component/About';
@@ -26,10 +26,7 @@ function App() {
           localStorage.removeItem('isChangePassword');
           navigate("/Login");
         }
-
-      } else {
-        navigate("/Login");
-      }
+      } 
     };
 
     checkToken(); // Call the function on every route change

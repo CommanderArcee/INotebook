@@ -30,12 +30,17 @@ export default function Otp(props) {
                 dispatch(clearDataErrorMsg());
             }, 1000)
         }
+        else if(otpData.data?.msg != null){
+            setTimeout(() => {
+                dispatch(clearDataErrorMsg());
+            }, 1000)
+        }
         if (otpData.verifyData?.ErrorMsg != null) {
             setTimeout(() => {
                 dispatch(clearVerifyDataErrorMsg());
             }, 1000)
         }
-    }, [otpData.data?.ErrorMsg, otpData.verifyData?.ErrorMsg])
+    }, [otpData.data?.ErrorMsg, otpData.data?.msg, otpData.verifyData?.ErrorMsg])
 
     return (
         <>
@@ -48,10 +53,17 @@ export default function Otp(props) {
                         <input type="text" className="form-control" id="otp" name='otp' onChange={(e) => setOtp(e.target.value)} value={otp} />
                     </div>
                 </div>
-                {otpData.data?.ErrorMsg &&
+                {otpData?.data?.ErrorMsg &&
                     <div id="divErrorMsg" className="col-md-5 offset-md-4 form-text text-white mb-4 fs-5 font-family-cursive bg-red">
                         <strong>
-                            {otpData.data.ErrorMsg}
+                            {otpData?.data?.ErrorMsg}
+                        </strong>
+                    </div>
+                }
+                {otpData?.data?.msg &&
+                    <div id="divSentMailMsg" className="col-md-6 offset-md-4 form-text text-white mb-4 fs-5 font-family-cursive bg-green">
+                        <strong>
+                            {otpData?.data?.msg}
                         </strong>
                     </div>
                 }
