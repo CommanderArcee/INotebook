@@ -1,16 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const apiUrl = process.env.REACT_APP_API_URL;
+import { apiService } from "../../../Services/ApiService";
 
 export const getLoggedInUserDetails = createAsyncThunk('GetUserDetails' , async () => {
-    const response = await fetch(`${apiUrl}/auth/getuser`, {
-        method : "GET",
-        headers : {
-            "Content-Type": "application/json",
-            "Auth-Token" : localStorage.getItem('token')
+    const response = await apiService.get('/auth/getuser', {
+        headers:{
+            "auth-token": localStorage.getItem('token')
         }
     });
-    const responseData = await response.json();
-    return responseData;
+
+    // In axios we receive responses from api in Data key. Its required to return this.
+    return response.data;
 });
  
  

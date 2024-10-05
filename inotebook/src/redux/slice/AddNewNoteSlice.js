@@ -1,21 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-const apiUrl = process.env.REACT_APP_API_URL;
-
+import { apiService } from '../../Services/ApiService';
 
 // we can createasyncthunk is a action becasue with api we get data and where we can get data that was a action.
 export const addNotes = createAsyncThunk('addNotes', async ({title, description, noteTag}) =>{
-    const response = await fetch(`${apiUrl}/notes/createnotes`, {
-        method : "POST",
-        headers : {
-            "Content-Type": "application/json",
+    const response = await apiService.post('/notes/createnotes', 
+        {title, description, noteTag},   // This is the data (body of the request)
+        {
+        headers:{
             "auth-token": localStorage.getItem('token')
-        },
-        body: JSON.stringify({title, description, noteTag})
+        }
     });
     
-    // by text() method which is used with response. So we send text in response from backend.
-    const responseData = await response.text();
-    return responseData;
+    return response.data;
 })
 
 

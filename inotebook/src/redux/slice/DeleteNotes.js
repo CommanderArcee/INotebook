@@ -1,27 +1,23 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-const apiUrl = process.env.REACT_APP_API_URL;
+import { apiService } from '../../Services/ApiService';
 
 // we can createasyncthunk is a action becasue with api we get data and where we can get data that was a action.
 export const funcDeleteNote = createAsyncThunk('funcDeleteNote', async (id) =>{
-    const response = await fetch(`${apiUrl}/notes/${id}/deletenote`, {
-        method : "POST",
-        headers : {
-            "Content-Type": "application/json",
+    // Here is one more catch between fetch and axios.
+    /* 
+    -> In fetch do not required to add body in post, put, patch http methods. However in axios its mandatory to add body because post, put, patch methods requires.
+       So when we delete any data we use post, axios checks body(means json) but sometimes we send the data in url in which body not requries. we send body as an Empty Obj.
+    */
+    const response = await apiService.post(`/notes/${id}/deletenote`, 
+        {} ,
+        {
+        headers:{
             "auth-token": localStorage.getItem('token')
         }
-        // Here we do not use body because we want only delete data which we get done by Id. More E
     });
 
-    // by text() method which is used with response. we send text in response from backend. Here we use text method because we send text in response.
-    const responseData = await response.text();
-    return responseData;
+    return response.data;
 });
-// why we give body and what the use of body?
-/*
--> Body means we send data with the request which we need to add/update that why's we use this or some time we get data on the basis of few data so, also use this tbhi
-body mei data ata hai or backend mei humei req.body se data milta hai. 
-*/
-
 
 const deleteNotesSlice = createSlice({
     name : "deleteNotes",

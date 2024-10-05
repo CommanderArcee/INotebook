@@ -1,4 +1,10 @@
+import axios from "axios";
 
-const baseAPIUrl = `http://localhost:${process.env.PORT}/api`;
+export const apiService = axios.create({
+    baseURL : `http://localhost:5000/api`,
+    headers : {
+        'Content-Type': 'application/json',
+    }
+})
 
-module.exports = baseAPIUrl;
+//const baseAPIUrl = `http://localhost:${process.env.PORT}/api`;
