@@ -1,7 +1,10 @@
-const baseUrl = process.env.REACT_APP_API_URl;
+import axios from "axios";
 
-const api = {
-    getLoggedInUserDetails : `${baseUrl}/auth/getuser`
-}
+export const apiService = axios.create({
+    baseURL : `http://localhost:5000/api`,
+    headers : {
+        'Content-Type': 'application/json',
+    }
+})
 
-module.exports = api;
+//const baseAPIUrl = `http://localhost:${process.env.PORT}/api`;

@@ -38,6 +38,10 @@ module.exports = {
         type: Sequelize.TINYINT,
         allowNull: false
       },
+      IsValidOtp: {
+        type: Sequelize.TINYINT,
+        allowNull: false
+      },
       // Add createdAt and updatedAt columns
       created_at: {
         allowNull: false,

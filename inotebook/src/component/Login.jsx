@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/auth/page/loginSlice';
@@ -13,21 +13,25 @@ export default function Login() {
     const navigate = useNavigate();
     const showAlert = useAlert();
     const validationAlertMsg = useSelector(state => state.ValidationAlert.alert);
+    // const loginData = useSelector(state => state.login?.authData);
 
     /* By this without useSelector also get results from an api method as we do below. which we do in redux method with extra reducer. */
     /* we add logic here. By this I get to know that if needed we add own code logic as well not depend on useSelector to get data. if we are not able to work with useSelector. */
     const login = async (ev) => {
         ev.preventDefault();
+
+        await dispatch(loginUser({ email, password }));
+
         const result = await dispatch(loginUser({ email, password }));
         if (result.type === 'loginUser/fulfilled') {
-            const { authToken, ErrorMsg } = result.payload;
-            if (authToken) {
-                localStorage.setItem('token', authToken.split(":")[1]);
+            const { data, headerAuthToken } = result.payload;
+            if (headerAuthToken) {
+                localStorage.setItem('token', headerAuthToken.split(":")[1]);
                 await dispatch(getLoggedInUserDetails());
                 navigate("/");
             }
-            else if (ErrorMsg) {
-                showAlert({type : "danger", message : ErrorMsg});
+            else if (data.ErrorMsg) {
+                showAlert({type : "danger", message : data.ErrorMsg});
             }
             else {
                 showAlert({type : "danger", message : "login failed"});
