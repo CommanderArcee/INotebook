@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const apiUrl = process.env.REACT_APP_API_URl;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const signupUser = createAsyncThunk('signupAPi', async ({name, email, password}) => {
     const response = await fetch(`${apiUrl}/auth/createUser`, {

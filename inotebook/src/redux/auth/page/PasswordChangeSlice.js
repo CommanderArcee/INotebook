@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const apiUrl = process.env.REACT_APP_API_URl;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const funcChangePassword = createAsyncThunk("Change_ForgotPassword", async ({ email, newPassword, Verify, IsActive, IsValidOtp }) => {
     
