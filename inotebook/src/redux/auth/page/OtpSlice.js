@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const apiUrl = process.env.REACT_APP_API_URl;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const otpSendMail = createAsyncThunk('OtpwithSendMail' , async ({userEmail}) => {
+    console.log(`${apiUrl}/otp/otpSendMail`);
     const response = await fetch(`${apiUrl}/otp/otpSendMail`, {
         method : "POST",
         headers : {

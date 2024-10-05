@@ -1,7 +1,8 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-const apiUrl = process.env.REACT_APP_API_URl;
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export const updateEditNote = createAsyncThunk('updateEditNote' , async ({id, title, description}) => {
+    // Here, we will not use axios.
     const response = await fetch(`${apiUrl}/notes/${id}/updatenote`, {
         method : 'PUT',
         headers : {

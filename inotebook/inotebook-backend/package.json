@@ -2,10 +2,10 @@
   "name": "inotebook",
   "version": "1.0.0",
   "description": "INotebook - Your notes will be on cloud.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
