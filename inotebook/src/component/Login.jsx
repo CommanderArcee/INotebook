@@ -26,7 +26,7 @@ export default function Login() {
         if (result.type === 'loginUser/fulfilled') {
             const { data, headerAuthToken } = result.payload;
             if (headerAuthToken) {
-                localStorage.setItem('token', headerAuthToken.split(":")[1]);
+                localStorage.setItem('token', headerAuthToken.split(" ")[1]);
                 await dispatch(getLoggedInUserDetails());
                 navigate("/");
             }

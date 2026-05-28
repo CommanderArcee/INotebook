@@ -23,6 +23,7 @@ app.use(cors({
 app.use(require('./routes/auth'));
 app.use(require('./routes/notes'));
 app.use(require('./routes/otp'));
+app.use('/api/ai', require('./routes/ai'));
 
 
 app.listen(PORT, () => {

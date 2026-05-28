@@ -24,7 +24,7 @@ function NewNotes() {
   }, []); 
 
   const saveNotes = () => {
-    let {selectedNoteTagValue} = noteTagState;
+    let selectedNoteTagValue = noteTagState?.selectedNoteTagValue;
 
     if(selectedNoteTagValue === "-1") {
       showAlert({type : "danger" , message : "Please Select Note Tag"});

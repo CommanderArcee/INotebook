@@ -89,7 +89,7 @@ router.post('/api/auth/login', [handleEmail, handlePassword], async (req, res) =
         //it means we sign the jwt with our secrer key. if someone send wrong data by secret key we got to know it wrong data. 
         //res.status(200).set('Authorization', `Bearer ${authToken}`);
         const authToken = jwt.sign(payload, config.development.JWT_SECRET, options);
-        res.setHeader('Authorization', `Bearer:${authToken}`);
+        res.setHeader('Authorization', `Bearer ${authToken}`);;
         // Above both ways we can set the header in response and to get info. from response header for this we need to add exposedHeader key in cors then able to get info from res header.
 
         res.send({SuccessMsg :"User Successfully Logged In"});

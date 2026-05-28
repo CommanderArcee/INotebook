@@ -26,7 +26,7 @@ export default function Signup() {
     if (signupData.type === 'signupAPi/fulfilled') {
       const { authToken, ErrorMsg } = signupData.payload;
       if (authToken) {
-        localStorage.setItem('token', authToken.split(":")[1]);
+        localStorage.setItem('token', authToken.split(" ")[1]);
         showAlert({ type: "success", message: "Account created successfully !!" });
       }
       else if (ErrorMsg) {
