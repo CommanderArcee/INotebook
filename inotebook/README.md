@@ -1,70 +1,146 @@
-# Getting Started with Create React App
+# INotebook — AI-Powered Notes App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack notes application built with React, Node.js, and SQLite, featuring multiple AI capabilities including LLM-powered summarization, auto-tagging, retrieval-augmented generation (RAG), and a fine-tuned DistilBERT classification model.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+### Core
+- User authentication (Signup, Login, JWT-based sessions)
+- Create, read, update, and delete notes
+- Tag-based filtering and search
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### AI Features
+- **✨ Summarize** — Condenses any note into 2-3 sentences using the Gemini LLM API
+- **🏷️ Auto-tag** — Suggests a relevant tag for a note based on its content using Gemini
+- **🤖 Ask Your Notes** — RAG-based Q&A that lets you ask questions across all your notes
+- **🧠 Classify** — Categorizes notes using a fine-tuned DistilBERT model trained with PyTorch
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Frontend**
+- React, Redux Toolkit, Bootstrap
 
-### `npm run build`
+**Backend**
+- Node.js, Express, Sequelize ORM, SQLite
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**AI/ML**
+- Gemini API (summarization, auto-tagging, RAG)
+- HuggingFace Transformers + PyTorch (DistilBERT fine-tuning)
+- FastAPI + Uvicorn (model serving)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Architecture
 
-### `npm run eject`
+```
+Frontend (React)
+      ↓
+Backend (Node.js/Express) ←→ Gemini API
+      ↓
+FastAPI Server ←→ Fine-tuned DistilBERT Model
+      ↓
+SQLite Database
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Getting Started
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Prerequisites
+- Node.js v18+
+- Python 3.10+
+- Gemini API key (free at aistudio.google.com)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 1. Clone the repo
+```bash
+git clone https://github.com/CommanderArcee/INotebook.git
+cd INotebook/inotebook
+```
 
-## Learn More
+### 2. Setup the frontend
+```bash
+npm install
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Create a `.env` file in `inotebook/`:
+```
+REACT_APP_API_URL=http://localhost:5000/api
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 3. Setup the backend
+```bash
+cd inotebook-backend
+npm install
+```
 
-### Code Splitting
+Create a `.env` file in `inotebook-backend/`:
+```
+GEMINI_API_KEY=your_gemini_api_key_here
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 4. Train and serve the classification model
+```bash
+cd ../../ml
+pip install torch transformers scikit-learn pandas fastapi uvicorn
+jupyter notebook  # Run FineTunedLLM.ipynb to train and save the model
+uvicorn classify:app --port 8000
+```
 
-### Analyzing the Bundle Size
+### 5. Run the app
+```bash
+# Terminal 1 - Backend
+cd inotebook/inotebook-backend
+node app.js
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Terminal 2 - Frontend
+cd inotebook/inotebook
+npm start
+```
 
-### Making a Progressive Web App
+App runs at `http://localhost:3000`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## ML Model Details
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The classification model is a fine-tuned **DistilBERT** (distilbert-base-uncased) for multi-class note categorization.
 
-### Deployment
+- **Task**: Multi-class text classification (Study, Career, Personal, Ideas, Gaming)
+- **Framework**: PyTorch + HuggingFace Transformers
+- **Training data**: 60 labeled note samples
+- **Validation accuracy**: 83%
+- **Served via**: FastAPI on port 8000
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+To retrain the model, open `ml/FineTunedLLM.ipynb` and run all cells.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Project Structure
+
+```
+INotebook/
+├── inotebook/
+│   ├── inotebook-backend/    # Node.js/Express API
+│   │   ├── routes/           # auth, notes, ai routes
+│   │   ├── models/           # Sequelize models
+│   │   └── middleware/       # JWT auth middleware
+│   └── src/                  # React frontend
+│       ├── component/        # NotesCard, Login, Signup etc.
+│       ├── pages/            # Home page
+│       └── redux/            # State management
+└── ml/
+    ├── FineTunedLLM.ipynb    # Training notebook
+    ├── classify.py           # FastAPI model server
+    └── model/                # Saved model (not in repo, regenerate locally)
+```
+
+---
+
+## Author
+
+**Krrishnav Gupta** — Third-year B.Tech student at Delhi Technological University  
+[GitHub](https://github.com/CommanderArcee)
